@@ -56,7 +56,7 @@ function Keyboard({activeLetters , inActiveLetters , addGuessedletter} : Keyboar
           const isInActive = inActiveLetters.includes(key)
 
           return (
-            <button onClick={() => addGuessedletter(key)} className={`${styles.btn} ${isActive ? styles.active : ""} ${isActive ? styles.inactive : ""}`} key={key}>{key}</button>
+            <button onClick={() => addGuessedletter(key)} className={`${styles.btn} ${isActive ? styles.active : ""} ${isInActive ? styles.inactive : ""}`} key={key}>{key}</button>
           )
 
         })}
