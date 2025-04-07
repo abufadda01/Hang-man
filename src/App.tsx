@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useEffect, useState } from 'react'
+import React, { KeyboardEvent, useCallback, useEffect, useState } from 'react'
 import words from "./wordList.json"
 import HangmanDrawing from './components/HangmanDrawing'
 import HangmanWord from './components/HangmanWord'
@@ -9,8 +9,7 @@ const App = () => {
 
   // useState function to return a random word text from the words array
   const [wordToGuess , setWordToGuess] = useState(() => {
-    return "well"
-    // return words[Math.floor(Math.random() * words.length)] 
+    return words[Math.floor(Math.random() * words.length)] 
   })
 
 
@@ -22,12 +21,13 @@ const App = () => {
   const incorrectLetters = guessedLetters.filter(letter => !wordToGuess.includes(letter))
 
 
-
-  function addGuessedletter(letter : string){
+  // we use useCallback hook to make re create the function logic every time we render the page (to not make wasted re render , complix calculations)
+  const addGuessedletter = useCallback((letter : string) => {
     if(guessedLetters.includes(letter)) return // to not show all body parts if user keep enter same incorrect char (each wrong char will show one body part)
     setGuessedLetters(currentLetters => [...currentLetters , letter])
-  }
-  
+  } , [])
+
+
 
   
   useEffect(() => {
@@ -78,7 +78,7 @@ const App = () => {
       <HangmanWord guessedLetters={guessedLetters} wordToGuess={wordToGuess} />
 
       <div style={{alignSelf : "stretch" , marginTop : "30px"}}>
-        <Keyboard/>
+        <Keyboard activeLetters={guessedLetters.filter(letter => wordToGuess.includes(letter))} inActiveLetters={incorrectLetters} addGuessedletter={addGuessedletter} />
       </div>
 
     </div>

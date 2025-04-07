@@ -32,8 +32,15 @@ const KEYS = [
 ]
 
 
+type KeyboardProps = {
+  activeLetters : string[] 
+  inActiveLetters : string[] 
+  addGuessedletter : (letter : string) => void
+}
 
-function Keyboard() {
+
+
+function Keyboard({activeLetters , inActiveLetters , addGuessedletter} : KeyboardProps) {
 
   return (
     <div 
@@ -43,9 +50,16 @@ function Keyboard() {
         gap : ".7rem"
       }}>
 
-        {KEYS.map((key) => (
-          <button className={`${styles.btn}`} key={key}>{key}</button>
-        ))}
+        {KEYS.map((key) => {
+
+          const isActive = activeLetters.includes(key)
+          const isInActive = inActiveLetters.includes(key)
+
+          return (
+            <button onClick={() => addGuessedletter(key)} className={`${styles.btn} ${isActive ? styles.active : ""} ${isActive ? styles.inactive : ""}`} key={key}>{key}</button>
+          )
+
+        })}
 
     </div>
   )
